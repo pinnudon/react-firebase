@@ -1,26 +1,45 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { Component } from 'react';
 import './App.css';
+import Fire from './config/Fire'
+import Home from './config/Home'
+import Login from './config/Login'
+import ContactForm from './config/ContactForm'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends Component{
+  constructor(props){
+    super(props);
+    this.state={
+      user: {}
+    }
+  }
+  componentDidMount(){
+    this.authListener()
+  }
+  authListener(){
+    Fire.auth().onAuthStateChanged((user)=>{
+      if(user){
+        this.setState({user})
+      }else{
+        this.setState({user : null})
+      }
+    })
+  }
+  render(){
+    return (
+      <div className='App'>
+        <div>
+        <ContactForm />
+        </div>
+        {this.state.user ? (<Home />) : (<Login />)}
+        {/* <div>
+        <ContactForm />
+        </div> */}
+      </div>
+    );
+  }
 }
+// function App() {
+
+// }
 
 export default App;
